@@ -78,6 +78,8 @@ func RemoveSubjectFromItsTree(subject *xmlquery.Node) error {
 	}
 
 	subject.Parent = nil
+	subject.PrevSibling = nil
+	subject.NextSibling = nil
 	return nil
 }
 
