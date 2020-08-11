@@ -116,6 +116,8 @@ func CopyBranch(subject *xmlquery.Node) (*xmlquery.Node, error) {
 	}
 
 	ret.Parent = nil
+	ret.PrevSibling = nil
+	ret.NextSibling = nil
 
 	return ret, nil
 }
