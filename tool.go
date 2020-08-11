@@ -1,6 +1,8 @@
 package godirtyxmlquery
 
 import (
+	"encoding/xml"
+
 	"github.com/antchfx/xmlquery"
 )
 
@@ -58,9 +60,63 @@ func InsertSubjectAfterTargetChildren(subject, target *xmlquery.Node) error {
 	return InsertSubjectBeforeTargetChildren(subject, target)
 }
 
+func RemoveSubjectFromItsTree(subject *xmlquery.Node) error {
+	if subject.PrevSibling == nil {
+		if subject.Parent != nil {
+			subject.Parent.FirstChild = subject.NextSibling
+		}
+	} else {
+		subject.PrevSibling.NextSibling = subject.NextSibling
+	}
+
+	if subject.NextSibling == nil {
+		if subject.Parent != nil {
+			subject.Parent.LastChild = subject.PrevSibling
+		}
+	} else {
+		subject.NextSibling.PrevSibling = subject.PrevSibling
+	}
+
+	subject.Parent = nil
+	return nil
+}
+
+func CopyLeaf(subject *xmlquery.Node) (*xmlquery.Node, error) {
+
+	ret := &xmlquery.Node{
+		Type:         subject.Type,
+		Data:         subject.Data,
+		Prefix:       subject.Prefix,
+		NamespaceURI: subject.NamespaceURI,
+	}
+
+	attr := make([]xml.Attr, len(subject.Attr))
+	copy(attr, subject.Attr)
+	ret.Attr = attr
+
+	t := subject.FirstChild
+	for {
+		if t == nil {
+			break
+		}
+
+		lc, err := CopyLeaf(t)
+		if err != nil {
+			return nil, err
+		}
+
+		err = InsertSubjectAfterTargetChildren(lc, ret)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return ret, nil
+}
+
 /*
 You can wrap Naive calls with func() { defer func() {x:=recover()}() } to ease
-null pointers the pain
+null pointers pain
 */
 type NaiveEditTool struct {
 	Node *xmlquery.Node
