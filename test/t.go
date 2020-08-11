@@ -47,7 +47,7 @@ func main() {
 
 	fmt.Println(doc.OutputXML(false))
 
-	co, err := godirtyxmlquery.CopyLeaf(body)
+	co, err := godirtyxmlquery.CopyBranch(body)
 	if err != nil {
 		log.Fatalln(err)
 	}
