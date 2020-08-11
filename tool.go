@@ -83,7 +83,7 @@ func RemoveSubjectFromItsTree(subject *xmlquery.Node) error {
 	return nil
 }
 
-func CopyLeaf(subject *xmlquery.Node) (*xmlquery.Node, error) {
+func CopyBranch(subject *xmlquery.Node) (*xmlquery.Node, error) {
 
 	ret := &xmlquery.Node{
 		Type:         subject.Type,
@@ -102,7 +102,7 @@ func CopyLeaf(subject *xmlquery.Node) (*xmlquery.Node, error) {
 			break
 		}
 
-		lc, err := CopyLeaf(t)
+		lc, err := CopyBranch(t)
 		if err != nil {
 			return nil, err
 		}
@@ -114,6 +114,8 @@ func CopyLeaf(subject *xmlquery.Node) (*xmlquery.Node, error) {
 
 		t = t.NextSibling
 	}
+
+	ret.Parent = nil
 
 	return ret, nil
 }
