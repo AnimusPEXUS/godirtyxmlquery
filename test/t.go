@@ -52,5 +52,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	fmt.Println(co.OutputXML(false))
+	co.LastChild.FirstChild.Data = "We could steal time, just for one day"
+
+	fmt.Println(co.OutputXML(true))
 }
