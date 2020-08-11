@@ -109,6 +109,8 @@ func CopyLeaf(subject *xmlquery.Node) (*xmlquery.Node, error) {
 		if err != nil {
 			return nil, err
 		}
+
+		t = t.NextSibling
 	}
 
 	return ret, nil

@@ -40,5 +40,10 @@ func main() {
 		Data: "I will be King! And You.. You will be Queen!",
 	})
 
-	fmt.Println(html.OutputXML(false))
+	co, err := godirtyxmlquery.CopyLeaf(html)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	fmt.Println(co.OutputXML(false))
 }
