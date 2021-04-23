@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	ttt := `<html><body></body></html>`
+	ttt := `<html><body><p></p></body></html>`
 	doc, err := xmlquery.Parse(strings.NewReader(ttt))
 	if err != nil {
 		log.Fatalln(err)
