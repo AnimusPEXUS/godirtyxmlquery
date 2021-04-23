@@ -1,8 +1,6 @@
 package godirtyxmlquery
 
 import (
-	"encoding/xml"
-
 	"github.com/antchfx/xmlquery"
 )
 
@@ -92,8 +90,18 @@ func CopyBranch(subject *xmlquery.Node) (*xmlquery.Node, error) {
 		NamespaceURI: subject.NamespaceURI,
 	}
 
-	attr := make([]xml.Attr, len(subject.Attr))
-	copy(attr, subject.Attr)
+	attr := make([]xmlquery.Attr, len(subject.Attr))
+
+	// copy(attr, subject.Attr)
+
+	for k, v := range subject.Attr {
+		attr[k] = xmlquery.Attr{
+			Name:         v.Name,
+			Value:        v.Value,
+			NamespaceURI: v.Name.Space,
+		}
+	}
+
 	ret.Attr = attr
 
 	t := subject.FirstChild
